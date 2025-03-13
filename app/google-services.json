@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "844687699262",
+    "project_id": "primenews-bfc9c",
+    "storage_bucket": "primenews-bfc9c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844687699262:android:41d8887e478b7eb88f506f",
+        "android_client_info": {
+          "package_name": "com.cstp2205.primenews"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEkpxoIqSzKMLZba83T9XIUbiTsT6LQcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
