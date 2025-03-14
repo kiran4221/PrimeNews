@@ -9,9 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.cstp2205.primenews.ui.screens.auth.SignInScreen
+import com.cstp2205.primenews.ui.screens.auth.SignUpScreen
+import com.cstp2205.primenews.ui.screens.news.NewsScreen
 import com.cstp2205.primenews.ui.theme.PrimeNewsTheme
+import com.google.firebase.auth.ActionCodeUrl
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +27,39 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PrimeNewsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                    PrimeNewsApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun PrimeNewsApp() {
+
+   var currentScreen by remember { mutableStateOf("signIn")}
+
+    when (currentScreen) {
+        "signIn" -> SignInScreen(
+            onSignInSuccess = {currentScreen = "newsScreen"},
+            onNavigateToSignUp = {currentScreen = "signUp"}
+        )
+
+        "signUp" -> SignUpScreen(
+            onSignUpSuccess = {currentScreen = "newsScreen"},
+            onNavigateToSignIn = {currentScreen = "signIn"}
+        )
+
+        /*"newsScreen" -> NewsScreen(
+            onSignOut = { currentScreen = "signIn"}
+        )*/
+    }
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     PrimeNewsTheme {
-        Greeting("Android")
+        PrimeNewsApp()
     }
 }

@@ -43,12 +43,23 @@ android {
 
 dependencies {
 
+    //these are the firebase dependencies
+
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
-
-
-
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.6.0")
 
+    implementation("com.google.firebase:firebase-auth-ktx:21.3.0")
+
+    // these are the dependencies for the jetpack compose
+
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.activity:activity-compose:1.7.2")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
