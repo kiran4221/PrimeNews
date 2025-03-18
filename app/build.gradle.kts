@@ -1,6 +1,6 @@
 plugins {
     id("com.google.gms.google-services")
-
+    alias(libs.plugins.devtoolsKsp)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
@@ -41,7 +41,24 @@ android {
     }
 }
 
+val room_version = "2.6.1"
+
 dependencies {
+
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //Added for Rooms val room_version = "2.6.1" implementation("androidx.room:room-runtime:$room_version") ksp("androidx.room:room-compiler:$room_version") annotationProcessor("androidx.room:room-compiler:$room_version") implementation("androidx.room:room-ktx:$room_version") implementation("androidx.room:room-rxjava2:$room_version") implementation("androidx.room:room-rxjava3:$room_version") implementation("androidx.room:room-guava:$room_version")
+
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    testImplementation("androidx.room:room-testing:$room_version")
+    implementation("androidx.room:room-paging:$room_version")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")
 
     //these are the firebase dependencies
 
