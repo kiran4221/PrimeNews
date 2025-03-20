@@ -37,7 +37,7 @@ fun FavouritesScreen(
                             .background(Color.White)
                             .padding(8.dp)
                             .fillMaxWidth()
-                            .clickable { onClick() },
+                            .clickable { onArticleClick(article) },
                         colors = CardDefaults.cardColors(
                             contentColor = Color.Black,
                             containerColor = Color(0xFFE3F2FD)
