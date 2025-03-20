@@ -36,7 +36,7 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
         errorMessage = null
         viewModelScope.launch {
             try {
-                val newsList = repository.fetchTeslaNews(apiKey)
+                val newsList = repository.fetchHeadlines(apiKey)
                 articles.clear()
                 articles.addAll(newsList)
             } catch (e: Exception) {

@@ -8,8 +8,8 @@ class NewsRepository(
     private val apiService: NewsApiService,
     private val articleDao: ArticleDao
 ) {
-    suspend fun fetchTeslaNews(apiKey: String): List<Article> {
-        val response = apiService.getTeslaNews(apiKey = apiKey)
+    suspend fun fetchHeadlines(apiKey: String): List<Article> {
+        val response = apiService.getTopHeadlines(apiKey = apiKey)
         return response.articles.mapNotNull { dto ->
             dto.url?.let { url ->
                 Article(
