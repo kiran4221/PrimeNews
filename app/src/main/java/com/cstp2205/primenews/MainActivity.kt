@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +26,8 @@ import com.google.firebase.auth.ActionCodeUrl
 import com.cstp2205.primenews.viewmodel.NewsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cstp2205.primenews.data.model.Article
+import com.cstp2205.primenews.ui.screens.favourites.FavouritesScreen
+import com.cstp2205.primenews.ui.screens.profile.ProfileScreen
 import com.cstp2205.primenews.ui.screens.news.ArticleDetailScreen
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +45,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PrimeNewsApp() {
     var currentScreen by remember { mutableStateOf("signIn") }
+    var dashboardTab by remember { mutableStateOf("news") }
     val newsViewModel: NewsViewModel = viewModel()
     var selectedArticle by remember { mutableStateOf<Article?>(null) }
 
@@ -57,14 +62,39 @@ fun PrimeNewsApp() {
             LaunchedEffect(Unit) {
                 newsViewModel.loadNews("8bb8e5a543b4418a807e4e69b3c4af4a")
             }
-            NewsScreen(
-                articles = newsViewModel.articles,
-                onArticleClick = { article ->
-                    selectedArticle = article
-                    currentScreen = "detailScreen"
-                },
-                onSignOut = { currentScreen = "signIn" }
-            )
+            Scaffold (
+                bottomBar = {
+                    BottomNavBar(
+                        currentTab = dashboardTab,
+                        onTabSelected = { dashboardTab = it}
+                    )
+                }
+            ) {
+                innerPadding ->
+                Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+                    when (dashboardTab) {
+                        "news" -> NewsScreen(
+                            articles = newsViewModel.articles,
+                            onArticleClick = {article ->
+                                selectedArticle = article
+                                currentScreen = "detailScreen"
+                            },
+                            onSignOut = { currentScreen = "signIn"}
+                        )
+                        "favourites" -> FavouritesScreen(
+                            favourites = listOf(favourites),
+                            onArticleClick = { article ->
+                                selectedArticle = article
+                                currentScreen = "detailScreen"
+                            },
+                            onBack = {dashboardTab = "news"}
+                        )
+                        "profile" -> ProfileScreen(
+                            onLogout = { currentScreen = "signIn"}
+                        )
+                    }
+                }
+            }
         }
         "detailScreen" -> {
             selectedArticle?.let { article ->

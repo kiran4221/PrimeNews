@@ -26,6 +26,7 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = NewsRepository(apiService, db.articleDao())
 
     val articles = mutableStateListOf<Article>()
+    val favourites = mutableStateListOf<Article>()
     var isLoading by mutableStateOf(false)
         private set
     var errorMessage by mutableStateOf<String?>(null)
@@ -44,6 +45,12 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
             } finally {
                 isLoading = false
             }
+        }
+    }
+
+    fun savFavourite(article: Article) {
+        if (!favourites.contains(article)) {
+            favourites.add(article)
         }
     }
 }

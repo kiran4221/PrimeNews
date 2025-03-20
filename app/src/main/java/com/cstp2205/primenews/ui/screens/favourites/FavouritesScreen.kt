@@ -1,4 +1,3 @@
-// FavouritesScreen.kt
 package com.cstp2205.primenews.ui.screens.favourites
 
 import androidx.compose.foundation.clickable
