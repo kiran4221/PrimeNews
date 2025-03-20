@@ -11,7 +11,6 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticle(article: Article)
 
-
     @Query("SELECT * FROM articles")
     suspend fun getAllArticles(): List<Article>
 

@@ -50,7 +50,9 @@ fun PrimeNewsApp() {
 
     when (currentScreen) {
         "signIn" -> SignInScreen(
-            onSignInSuccess = { currentScreen = "newsScreen" },
+            onSignInSuccess = {
+                newsViewModel.loadFavourites()
+                currentScreen = "newsScreen" },
             onNavigateToSignUp = { currentScreen = "signUp" }
         )
         "signUp" -> SignUpScreen(
