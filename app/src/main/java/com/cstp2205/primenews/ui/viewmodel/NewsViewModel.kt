@@ -11,6 +11,8 @@ import com.cstp2205.primenews.data.model.Article
 import com.cstp2205.primenews.data.repository.NewsRepository
 import com.cstp2205.primenews.data.remote.NewsApiService
 import com.cstp2205.primenews.data.local.AppDatabase
+import com.cstp2205.primenews.data.local.FavouriteArticleDao
+import com.cstp2205.primenews.data.local.ArticleDao
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,9 +25,10 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val apiService = retrofit.create(NewsApiService::class.java)
-    private val repository = NewsRepository(apiService, db.articleDao())
+    private val repository = NewsRepository(apiService,db.articleDao(), db.favouriteArticleDao())
 
     val articles = mutableStateListOf<Article>()
+    val favourites = mutableStateListOf<Article>()
     var isLoading by mutableStateOf(false)
         private set
     var errorMessage by mutableStateOf<String?>(null)
@@ -36,7 +39,7 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
         errorMessage = null
         viewModelScope.launch {
             try {
-                val newsList = repository.fetchTeslaNews(apiKey)
+                val newsList = repository.fetchHeadlines(apiKey)
                 articles.clear()
                 articles.addAll(newsList)
             } catch (e: Exception) {
@@ -44,6 +47,21 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
             } finally {
                 isLoading = false
             }
+        }
+    }
+
+    fun saveFavourite(article: Article) {
+        viewModelScope.launch {
+            repository.saveFavourite(article)
+            favourites.clear()
+            favourites.addAll(repository.getFavourites())
+        }
+    }
+
+    fun loadFavourites() {
+        viewModelScope.launch {
+            favourites.clear()
+            favourites.addAll(repository.getFavourites())
         }
     }
 }

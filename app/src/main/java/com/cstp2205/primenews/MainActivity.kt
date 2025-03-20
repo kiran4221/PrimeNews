@@ -4,14 +4,30 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.*
 import com.cstp2205.primenews.ui.screens.auth.SignInScreen
 import com.cstp2205.primenews.ui.screens.auth.SignUpScreen
 import com.cstp2205.primenews.ui.screens.news.NewsScreen
 import com.cstp2205.primenews.ui.theme.PrimeNewsTheme
+import com.google.firebase.auth.ActionCodeUrl
 import com.cstp2205.primenews.viewmodel.NewsViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cstp2205.primenews.data.model.Article
+import com.cstp2205.primenews.ui.screens.favourites.FavouritesScreen
+import com.cstp2205.primenews.ui.screens.profile.ProfileScreen
 import com.cstp2205.primenews.ui.screens.news.ArticleDetailScreen
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +50,9 @@ fun PrimeNewsApp() {
 
     when (currentScreen) {
         "signIn" -> SignInScreen(
-            onSignInSuccess = { currentScreen = "newsScreen" },
+            onSignInSuccess = {
+                newsViewModel.loadFavourites()
+                currentScreen = "newsScreen" },
             onNavigateToSignUp = { currentScreen = "signUp" }
         )
         "signUp" -> SignUpScreen(
@@ -47,6 +65,7 @@ fun PrimeNewsApp() {
             }
             NewsScreen(
                 articles = newsViewModel.articles,
+                favourites = newsViewModel.favourites,
                 onArticleClick = { article ->
                     selectedArticle = article
                     currentScreen = "detailScreen"
@@ -58,10 +77,20 @@ fun PrimeNewsApp() {
             selectedArticle?.let { article ->
                 ArticleDetailScreen(
                     article = article,
-                    onSaveFavourite = { /* Save logic */ currentScreen = "newsScreen" },
+                    onSaveFavourite = {
+                        newsViewModel.saveFavourite(article)
+                        currentScreen = "newsScreen" },
                     onBack = { currentScreen = "newsScreen" }
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    PrimeNewsTheme {
+        PrimeNewsApp()
     }
 }

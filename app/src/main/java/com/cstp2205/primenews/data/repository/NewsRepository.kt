@@ -1,15 +1,18 @@
 package com.cstp2205.primenews.data.repository
 
 import com.cstp2205.primenews.data.local.ArticleDao
+import com.cstp2205.primenews.data.local.FavouriteArticleDao
 import com.cstp2205.primenews.data.model.Article
+import com.cstp2205.primenews.data.model.FavouriteArticle
 import com.cstp2205.primenews.data.remote.NewsApiService
 
 class NewsRepository(
     private val apiService: NewsApiService,
-    private val articleDao: ArticleDao
+    private val articleDao: ArticleDao,
+    private val favouriteArticleDao: FavouriteArticleDao
 ) {
-    suspend fun fetchTeslaNews(apiKey: String): List<Article> {
-        val response = apiService.getTeslaNews(apiKey = apiKey)
+    suspend fun fetchHeadlines(apiKey: String): List<Article> {
+        val response = apiService.getTopHeadlines(apiKey = apiKey)
         return response.articles.mapNotNull { dto ->
             dto.url?.let { url ->
                 Article(
@@ -25,13 +28,30 @@ class NewsRepository(
         }
     }
 
-    suspend fun saveArticle(article: Article) {
-        articleDao.insertArticle(article)
+    suspend fun saveFavourite(article: Article) {
+        val fav = FavouriteArticle(
+            url = article.url ?: "",
+            title = article.title,
+            description = article.description,
+            content = article.content,
+            author = article.author,
+            publishedAt = article.publishedAt,
+            urlToImage = article.urlToImage
+        )
+        favouriteArticleDao.insertFavourite(fav)
     }
 
-    suspend fun getSavedArticles(): List<Article> = articleDao.getAllArticles()
-
-    suspend fun removeArticle(articleUrl: String) {
-        articleDao.deleteArticleByUrl(articleUrl)
+    suspend fun getFavourites(): List<Article> {
+        return favouriteArticleDao.getFavouriteArticles().map { fav ->
+            Article(
+                url = fav.url,
+                title = fav.title,
+                description = fav.description,
+                author = fav.author,
+                publishedAt = fav.publishedAt,
+                content = fav.content,
+                urlToImage = fav.urlToImage
+            )
+        }
     }
 }
