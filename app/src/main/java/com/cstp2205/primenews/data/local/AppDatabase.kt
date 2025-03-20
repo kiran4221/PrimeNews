@@ -5,10 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.cstp2205.primenews.data.model.Article
+import com.cstp2205.primenews.data.model.FavouriteArticle
 
-@Database(entities = [Article::class], version = 1, exportSchema = false)
+@Database(entities = [Article::class, FavouriteArticle::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
+    abstract fun favouriteArticleDao(): FavouriteArticleDao
 
     companion object {
         @Volatile

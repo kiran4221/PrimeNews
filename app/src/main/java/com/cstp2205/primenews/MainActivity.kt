@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PrimeNewsApp() {
     var currentScreen by remember { mutableStateOf("signIn") }
-    var dashboardTab by remember { mutableStateOf("news") }
     val newsViewModel: NewsViewModel = viewModel()
     var selectedArticle by remember { mutableStateOf<Article?>(null) }
 
@@ -62,45 +61,23 @@ fun PrimeNewsApp() {
             LaunchedEffect(Unit) {
                 newsViewModel.loadNews("8bb8e5a543b4418a807e4e69b3c4af4a")
             }
-            Scaffold (
-                bottomBar = {
-                    BottomNavBar(
-                        currentTab = dashboardTab,
-                        onTabSelected = { dashboardTab = it}
-                    )
-                }
-            ) {
-                innerPadding ->
-                Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                    when (dashboardTab) {
-                        "news" -> NewsScreen(
-                            articles = newsViewModel.articles,
-                            onArticleClick = {article ->
-                                selectedArticle = article
-                                currentScreen = "detailScreen"
-                            },
-                            onSignOut = { currentScreen = "signIn"}
-                        )
-                        "favourites" -> FavouritesScreen(
-                            favourites = newsViewModel.favourites,
-                            onArticleClick = { article ->
-                                selectedArticle = article
-                                currentScreen = "detailScreen"
-                            },
-                            onBack = {dashboardTab = "news"}
-                        )
-                        "profile" -> ProfileScreen(
-                            onLogout = { currentScreen = "signIn"}
-                        )
-                    }
-                }
-            }
+            NewsScreen(
+                articles = newsViewModel.articles,
+                favourites = newsViewModel.favourites,
+                onArticleClick = { article ->
+                    selectedArticle = article
+                    currentScreen = "detailScreen"
+                },
+                onSignOut = { currentScreen = "signIn" }
+            )
         }
         "detailScreen" -> {
             selectedArticle?.let { article ->
                 ArticleDetailScreen(
                     article = article,
-                    onSaveFavourite = { currentScreen = "newsScreen" },
+                    onSaveFavourite = {
+                        newsViewModel.saveFavourite(article)
+                        currentScreen = "newsScreen" },
                     onBack = { currentScreen = "newsScreen" }
                 )
             }

@@ -19,19 +19,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cstp2205.primenews.data.model.Article
+import com.cstp2205.primenews.ui.screens.favourites.FavouritesScreen
+import com.cstp2205.primenews.ui.screens.profile.ProfileScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
     articles: List<Article>,
+    favourites: List<Article>,
     onArticleClick: (Article) -> Unit,
     onSignOut: () -> Unit
 ) {
     var selectedTab by remember { mutableStateOf("headlines") }
+
+    val topBarTitle = when (selectedTab) {
+        "headlines" -> "News Headlines"
+        "favourites" -> "Favourites"
+        "profile" -> "Profile"
+        else -> "News"
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("News Headlines", fontSize = 33.sp, fontWeight = FontWeight.Bold, color = Color(0xFF01579B)) },
+                title = { Text(topBarTitle, fontSize = 33.sp, fontWeight = FontWeight.Bold, color = Color(0xFF01579B)) },
                 actions = {
                     Button(
                         onClick = onSignOut,
@@ -46,7 +57,7 @@ fun NewsScreen(
             )
         },
         bottomBar = {
-            NavigationBar(containerColor = Color(0xFFE3F2FD)) {
+            NavigationBar(containerColor = Color.White) {
                 NavigationBarItem(
                     icon = { Icon(Icons.Filled.Public, contentDescription = "Headlines") },
                     label = { Text("Headlines") },
@@ -99,18 +110,14 @@ fun NewsScreen(
                             ArticleItem(article = article, onClick = { onArticleClick(article) })
                         }
                     }
-                    "favourites" -> Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Favourites Screen", fontSize = 20.sp)
-                    }
-                    "profile" -> Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Profile Screen", fontSize = 20.sp)
-                    }
+                    "favourites" -> FavouritesScreen(
+                            favourites = favourites,
+                            onArticleClick = onArticleClick,
+                            onBack = { selectedTab = "headlines"}
+                    )
+                    "profile" -> ProfileScreen (
+                        onLogout = onSignOut
+                    )
                 }
             }
         }

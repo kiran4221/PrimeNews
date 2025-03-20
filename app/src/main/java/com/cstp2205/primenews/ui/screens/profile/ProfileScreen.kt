@@ -32,11 +32,6 @@ fun ProfileScreen(
     val userEmail = user?. email ?: "Email not provided"
 
     Scaffold (
-        topBar = {
-            TopAppBar(
-                title = {Text("Profile", fontSize = 28.sp)}
-            )
-        },
         content = {innerPadding ->
             Column (
                 modifier = Modifier
