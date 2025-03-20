@@ -48,7 +48,7 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun savFavourite(article: Article) {
+    fun saveFavourite(article: Article) {
         if (!favourites.contains(article)) {
             favourites.add(article)
         }

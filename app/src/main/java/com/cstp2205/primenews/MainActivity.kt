@@ -82,7 +82,7 @@ fun PrimeNewsApp() {
                             onSignOut = { currentScreen = "signIn"}
                         )
                         "favourites" -> FavouritesScreen(
-                            favourites = listOf(favourites),
+                            favourites = newsViewModel.favourites,
                             onArticleClick = { article ->
                                 selectedArticle = article
                                 currentScreen = "detailScreen"
