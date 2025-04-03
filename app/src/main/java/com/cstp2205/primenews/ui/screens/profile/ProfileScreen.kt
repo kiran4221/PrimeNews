@@ -41,15 +41,15 @@ fun ProfileScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "User Profile", style = MaterialTheme.typography.titleLarge)
+                Text(text = "User Profile", style = MaterialTheme.typography.displayLarge)
 
                 Spacer(modifier = Modifier.height(18.dp))
 
-                Text(text = "Name: $userName", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Name: $userName", style = MaterialTheme.typography.titleLarge)
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text(text = "Email: $userEmail", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Email: $userEmail", style = MaterialTheme.typography.titleLarge)
 
                 Spacer(modifier = Modifier.height(25.dp))
 
@@ -57,7 +57,7 @@ fun ProfileScreen(
                     onClick = onLogout,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Text("Logout", style= MaterialTheme.typography.bodySmall)
+                    Text("Logout", style= MaterialTheme.typography.titleMedium)
                 }
             }
 

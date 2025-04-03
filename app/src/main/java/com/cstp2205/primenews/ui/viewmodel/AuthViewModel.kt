@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.tasks.await
 
 // Data class to store additional user info in Firestore.
@@ -38,6 +39,11 @@ class AuthViewModel : ViewModel() {
             currentUser = result.user
 
             currentUser?.let { user ->
+
+                val profileUpdates = com.google.firebase.auth.UserProfileChangeRequest.Builder()
+                    .setDisplayName(userName)
+                    .build()
+                user.updateProfile(profileUpdates).await()
 
                 val userData = UserInfo(
                     firstName = userName,
