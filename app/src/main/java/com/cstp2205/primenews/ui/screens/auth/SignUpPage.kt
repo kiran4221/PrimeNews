@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignUpScreen(
     onSignUpSuccess: () -> Unit,
+    onNewsScreen: () -> Unit,
     onNavigateToSignIn: () -> Unit
 ) {
     val authViewModel: AuthViewModel = viewModel()
@@ -83,6 +84,8 @@ fun SignUpScreen(
         }
 
         Button(onClick = {
+
+            onNewsScreen()
             coroutineScope.launch {
                 val success = authViewModel.signUp()
                 if (success) {

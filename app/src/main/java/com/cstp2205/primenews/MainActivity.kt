@@ -57,6 +57,7 @@ fun PrimeNewsApp() {
         )
         "signUp" -> SignUpScreen(
             onSignUpSuccess = { currentScreen = "newsScreen" },
+            onNewsScreen = {currentScreen = "newsScreen"},
             onNavigateToSignIn = { currentScreen = "signIn" }
         )
         "newsScreen" -> {
