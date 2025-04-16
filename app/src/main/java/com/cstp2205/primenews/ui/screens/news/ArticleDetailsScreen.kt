@@ -1,5 +1,11 @@
 package com.cstp2205.primenews.ui.screens.news
 
+//Necessary imports for making the URLs working
+
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
+
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -89,7 +95,14 @@ fun ArticleDetailScreen(
                 Text(
                     text = article.urlToImage ?: "No url available",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Blue
+                    color = Color.Blue,
+                    modifier = Modifier.clickable {
+                        // Safely check for a valid URL
+                        article.url?.let { url ->
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            context.startActivity(intent)
+                        }
+                    }
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
@@ -117,7 +130,14 @@ fun ArticleDetailScreen(
                 Text(
                     text = article.url ?: "No url available",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Blue
+                    color = Color.Blue,
+                    modifier = Modifier.clickable {
+                        // Safely check for a valid URL
+                        article.url?.let { url ->
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            context.startActivity(intent)
+                        }
+                    }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }
