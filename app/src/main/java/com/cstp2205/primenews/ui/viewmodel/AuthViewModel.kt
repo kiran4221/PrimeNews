@@ -67,6 +67,7 @@ class AuthViewModel : ViewModel() {
         try {
             val result = auth.signInWithEmailAndPassword(userEmail, userPassword).await()
             currentUser = result.user
+            userName = result.user?.displayName ?: ""
             return true
         } catch (e: Exception) {
             errorMessage = e.localizedMessage
@@ -75,6 +76,14 @@ class AuthViewModel : ViewModel() {
             isLoading = false
         }
     }
+
+    //fun signIn() {
+    //    val response = authRepository.signIn(userEmail, userPassword)
+    //    if (response.success) {
+    //        // Assume response contains user data
+    //        userName = response.user.name
+    //    }
+    //}
 
     fun signOut() {
         auth.signOut()
