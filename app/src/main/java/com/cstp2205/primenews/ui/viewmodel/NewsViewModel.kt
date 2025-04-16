@@ -50,18 +50,18 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveFavourite(article: Article) {
+    fun saveFavourite(article: Article, currentUserId: String) {
         viewModelScope.launch {
-            repository.saveFavourite(article)
+            repository.saveFavourite(article, currentUserId)
             favourites.clear()
-            favourites.addAll(repository.getFavourites())
+            favourites.addAll(repository.getFavourites(currentUserId))
         }
     }
 
-    fun loadFavourites() {
+    fun loadFavourites(currentUserId: String) {
         viewModelScope.launch {
             favourites.clear()
-            favourites.addAll(repository.getFavourites())
+            favourites.addAll(repository.getFavourites(currentUserId))
         }
     }
 }

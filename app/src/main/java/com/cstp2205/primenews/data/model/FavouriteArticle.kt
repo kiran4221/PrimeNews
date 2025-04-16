@@ -11,5 +11,7 @@ data class FavouriteArticle(
     val content: String?,
     val author: String?,
     val publishedAt: String?,
-    val urlToImage: String?
+    val urlToImage: String?,
+    // Added a mew field below  to store articles based on current user
+    val userId: String?
 )

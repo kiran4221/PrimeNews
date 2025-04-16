@@ -11,6 +11,7 @@ interface FavouriteArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavourite(article: FavouriteArticle)
 
-    @Query("SELECT * FROM favourite_articles")
-    suspend fun getFavouriteArticles(): List<FavouriteArticle>
+    // Updated get favourites query to fetch articles for current users
+    @Query("SELECT * FROM favourite_articles WHERE userId = :userId")
+    suspend fun getFavouriteArticles(userId: String): List<FavouriteArticle>
 }

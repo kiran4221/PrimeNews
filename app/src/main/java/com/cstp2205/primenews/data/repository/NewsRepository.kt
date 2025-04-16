@@ -28,7 +28,7 @@ class NewsRepository(
         }
     }
 
-    suspend fun saveFavourite(article: Article) {
+    suspend fun saveFavourite(article: Article, userId: String) {
         val fav = FavouriteArticle(
             url = article.url ?: "",
             title = article.title,
@@ -36,13 +36,14 @@ class NewsRepository(
             content = article.content,
             author = article.author,
             publishedAt = article.publishedAt,
-            urlToImage = article.urlToImage
+            urlToImage = article.urlToImage,
+            userId = userId
         )
         favouriteArticleDao.insertFavourite(fav)
     }
 
-    suspend fun getFavourites(): List<Article> {
-        return favouriteArticleDao.getFavouriteArticles().map { fav ->
+    suspend fun getFavourites(userId: String): List<Article> {
+        return favouriteArticleDao.getFavouriteArticles(userId).map { fav ->
             Article(
                 url = fav.url,
                 title = fav.title,

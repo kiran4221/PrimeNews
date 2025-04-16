@@ -29,6 +29,8 @@ import com.cstp2205.primenews.data.model.Article
 import com.cstp2205.primenews.ui.screens.favourites.FavouritesScreen
 import com.cstp2205.primenews.ui.screens.profile.ProfileScreen
 import com.cstp2205.primenews.ui.screens.news.ArticleDetailScreen
+import com.google.firebase.auth.FirebaseAuth
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +53,8 @@ fun PrimeNewsApp() {
     when (currentScreen) {
         "signIn" -> SignInScreen(
             onSignInSuccess = {
-                newsViewModel.loadFavourites()
+                val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                newsViewModel.loadFavourites(currentUserId)
                 currentScreen = "newsScreen" },
             onNavigateToSignUp = { currentScreen = "signUp" }
         )
@@ -79,7 +82,8 @@ fun PrimeNewsApp() {
                 ArticleDetailScreen(
                     article = article,
                     onSaveFavourite = {
-                        newsViewModel.saveFavourite(article)
+                        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                        newsViewModel.saveFavourite(article, currentUserId)
                         currentScreen = "newsScreen" },
                     onBack = { currentScreen = "newsScreen" }
                 )
