@@ -74,7 +74,9 @@ fun PrimeNewsApp() {
                     selectedArticle = article
                     currentScreen = "detailScreen"
                 },
-                onSignOut = { currentScreen = "signIn" }
+                onSignOut = { currentScreen = "signIn" },
+                selectedCategory = newsViewModel.selectedCategory,
+                onCategorySelected = {category -> newsViewModel.chooseCategory(category)}
             )
         }
         "detailScreen" -> {

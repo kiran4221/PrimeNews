@@ -34,12 +34,15 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
+    var selectedCategory by mutableStateOf<String?>(null)
+        private set
+
     fun loadNews(apiKey: String) {
         isLoading = true
         errorMessage = null
         viewModelScope.launch {
             try {
-                val newsList = repository.fetchHeadlines(apiKey)
+                val newsList = repository.fetchHeadlines(apiKey, selectedCategory)
                 articles.clear()
                 articles.addAll(newsList)
             } catch (e: Exception) {
@@ -63,5 +66,10 @@ class NewsViewModel(application: Application) : AndroidViewModel(application) {
             favourites.clear()
             favourites.addAll(repository.getFavourites(currentUserId))
         }
+    }
+
+    fun chooseCategory(category: String?) {
+        selectedCategory = category
+        loadNews("8bb8e5a543b4418a807e4e69b3c4af4a")
     }
 }

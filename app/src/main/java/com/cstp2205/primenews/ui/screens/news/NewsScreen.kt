@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
@@ -28,7 +29,9 @@ fun NewsScreen(
     articles: List<Article>,
     favourites: List<Article>,
     onArticleClick: (Article) -> Unit,
-    onSignOut: () -> Unit
+    onSignOut: () -> Unit,
+    selectedCategory: String?,
+    onCategorySelected: (String?) -> Unit
 ) {
     var selectedTab by remember { mutableStateOf("headlines") }
 
@@ -106,10 +109,37 @@ fun NewsScreen(
             ) {
                 when (selectedTab) {
                     "headlines" -> LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(articles) { article ->
-                            ArticleItem(article = article, onClick = { onArticleClick(article) })
+                        item {
+                            val categories =
+                                listOf(null, "sports", "technology", "fashion", "health", "science")
+                            LazyRow(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp)
+                            ) {
+                                items(categories) { category ->
+                                    val label =
+                                        category?.replaceFirstChar { it.uppercase() } ?: "All"
+                                    FilterChip(
+                                        selected = (category == selectedCategory),
+                                        onClick = { onCategorySelected(category) },
+                                        label = { Text(label) },
+                                        modifier = Modifier.padding(horizontal = 5.dp)
+                                    )
+                                }
+                            }
+
+                            Spacer(Modifier.height(8.dp))
                         }
-                    }
+
+
+                                items(articles) { article ->
+                                    ArticleItem(article = article, onClick = { onArticleClick(article) }
+                                    )
+
+                                }
+                        }
+
                     "favourites" -> FavouritesScreen(
                             favourites = favourites,
                             onArticleClick = onArticleClick,
