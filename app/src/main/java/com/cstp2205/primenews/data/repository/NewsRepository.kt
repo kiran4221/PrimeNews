@@ -11,8 +11,8 @@ class NewsRepository(
     private val articleDao: ArticleDao,
     private val favouriteArticleDao: FavouriteArticleDao
 ) {
-    suspend fun fetchHeadlines(apiKey: String): List<Article> {
-        val response = apiService.getTopHeadlines(apiKey = apiKey)
+    suspend fun fetchHeadlines(apiKey: String, category: String? = null): List<Article> {
+        val response = apiService.getTopHeadlines(apiKey = apiKey, category = category)
         return response.articles.mapNotNull { dto ->
             dto.url?.let { url ->
                 Article(
